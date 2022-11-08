@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('./img/05.jpg');
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .container {
+      width: 500px;
+      height: 500px;
+      align-items: center;
+      justify-content: center;
+      /* background-color: khaki; */
+    }
+
+    .box {
+      background-color: whitesmoke;
+      border-radius: 20px;
+      opacity: 70%;
+      margin-top: 20px;
+      color: darkslategrey;
+    }
+
+    .box-1 {
+      width: 500px;
+      height: 300px;
+      text-align: center;
+      line-height: 30px;
+    }
+
+    .box-2 {
+      width: 500px;
+      height: 100px;
+      border: 2px solid lavender;
+      background-color: whitesmoke;
+      border-radius: 20px;
+      opacity: 70%;
+      margin-top: 20px;
+      color: darkslategrey;
+      opacity: 1;
+      transition: 1s;
+    }
+
+    .box-2 ul li {
+      list-style: none;
+      font-size: 14px;
+      line-height: 23px;
+      font-weight: bold;
+    }
+
+    input {
+      height: 25px;
+      border: none;
+      border-radius: 25px;
+      background-color: #fee6e3;
+      text-align: center;
+    }
+
+
+    .button-56 {
+      align-items: center;
+      background-color: #fee6e3;
+      border: 1px solid #111;
+      border-radius: 8px;
+      box-sizing: border-box;
+      color: #111;
+      cursor: pointer;
+      font-family: Inter, sans-serif;
+      font-size: 16px;
+      height: 40px;
+      line-height: 24px;
+      max-width: 100%;
+      padding: 0 25px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      margin: auto;
+      margin-left: 10px;
+    }
+
+    .button-56:after {
+      background-color: #111;
+      border-radius: 8px;
+      content: "";
+      display: block;
+      height: 40px;
+      left: 0;
+      width: 100%;
+      position: absolute;
+      top: -1px;
+      transform: translate(5px, 5px);
+      transition: transform .2s ease-out;
+      z-index: -1;
+    }
+
+    .button-56:hover:after {
+      transform: translate(0, 0);
+    }
+
+    .button-56:active {
+      background-color: #ffdeda;
+      outline: 0;
+    }
+
+    .button-56:hover {
+      outline: 0;
+    }
+
+    @media (min-width: 768px) {
+      .button-56 {
+        padding: 0 40px;
+      }
+    }
+
+    .box-2.leave {
+      opacity: 0;
+      transition: 2s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="box box-1">
+      <br>
+      <h2>BMI 計算機</h2>
+      <p>請輸入身高 (CM)：<input type="text" id="cm"></p>
+      <p>請輸入體重 (KG)：<input type="text" id="kg"></p>
+      <br>
+      <button class="button-56" id="startId">開始計算</button>
+      <button class="button-56" id="cleanId">重新計算</button>
+    </div>
+    <div class="" id="box-2">
+      <ul>
+        <li id="bmi_id"></li>
+        <li id="healthy"></li>
+        <li id="note"></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const cm_input = document.querySelector('#cm')
+    const kg_input = document.querySelector('#kg')
+    const start = document.querySelector('#startId')
+    const clean = document.querySelector('#cleanId')
+    const bmi_id = document.querySelector('#bmi_id')
+    const healthy = document.querySelector('#healthy')
+    const note = document.querySelector('#note')
+    const box_2 = document.querySelector('#box-2')
+
+    // 按下開始計算後
+    start.onclick = function () {
+      var cm = cm_input.value.trim()
+      var kg = kg_input.value.trim()
+
+      // console.log(kg < 0);
+      if (kg < 0 || isNaN(kg) || kg.trim() == '' || Number.isInteger(kg) || cm < 0 || isNaN(cm) || cm.trim() == '' || Number.isInteger(cm)) {
+        box_2.classList.add('box-2')
+        bmi_id.innerHTML = '輸入內容有誤，請重新輸入'
+      } else {
+
+        let bmi = Math.round((kg / ((cm / 100) * (cm / 100))) * 10) / 10
+        // 利用toFixed() 四捨五入至小數點後指定位數 回傳值為 string(字串)
+        //利用 Math.floor 方法去小數點 取小數點後一位 四捨五入 回傳值為 number(數值)
+        console.log(((kg / ((cm / 100) * (cm / 100))) * 10) / 10);
+        box_2.classList.add('box-2')
+        bmi_id.innerHTML = 'BMI 值：' + bmi
+        
+        if (bmi < 18.5) {
+          healthy.innerHTML = '身體狀況：體重過輕'
+          note.innerHTML = '建議參考：若來陣風，您將會隨風而去'
+        } else if (18.5 <= bmi && bmi < 24) {
+          healthy.innerHTML = '身體狀況：健康體重'
+          note.innerHTML = '建議參考：太好了，這就是我要的結果'
+        } else if (24 <= bmi && bmi < 27) {
+          healthy.innerHTML = '身體狀況：過重'
+          note.innerHTML = '建議參考：再胖會被吃掉的喔...'
+        } else if (27 <= bmi && bmi < 30) {
+          healthy.innerHTML = '身體狀況：輕度肥胖'
+          note.innerHTML = '建議參考：千尋，你知道你爸媽變成豬被帶走了嗎？'
+        } else if (30 <= bmi && bmi < 35) {
+          healthy.innerHTML = '身體狀況：中度肥胖'
+          note.innerHTML = '建議參考：適度的運動有益身體健康'
+        } else if (bmi => 35) {
+          healthy.innerHTML = '身體狀況：重度肥胖'
+          note.innerHTML = '建議參考：您真的不考慮參加我們的減脂課程嗎？'
+        }
+      } 
+    }
+
+    clean.onclick = function () {
+      document.getElementById('bmi_id').innerHTML = ""
+      document.getElementById('healthy').innerHTML = ""
+      document.getElementById('note').innerHTML = ""
+      cm.value = ''
+      kg.value = ''
+      // box_2.classList.add('box-2.leave')
+      box_2.classList.remove('box-2')
+    }
+  </script>
+</body>
+
+</html>
